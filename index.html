@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AR Scavenger Hunt</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #instructions { 
+            position: fixed; 
+            top: 10px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 1; 
+            background: white; 
+            padding: 10px; 
+            border-radius: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <div id="instructions">Point your camera at the marker to reveal the clue!</div>
+    <a-scene embedded arjs='trackingMethod: best;'>
+        <a-marker preset="custom" type="pattern" url="phone.png">
+            <a-text value="clue text" position="0 0.5 0" scale="1 1 1"></a-text>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var marker = document.querySelector('a-marker');
+            var clueText = document.querySelector('a-text');
+
+            marker.addEventListener('markerFound', function () {
+                console.log('Marker found!');
+                clueText.setAttribute('value', 'Clue found: 7c116ff7719dad10be0a5263590108e4');
+            });
+
+            marker.addEventListener('markerLost', function() {
+                console.log('Marker lost!');
+                clueText.setAttribute('value', '');
+            });
+        });
+    </script>
+</body>
+</html>
